@@ -1,0 +1,487 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Maintena | Asset Maintenance</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-icon">
+                <i class="bi bi-gear-wide-connected"></i>
+            </span>
+            <span>maintena<span class="brand-dot">.</span></span>
+        </div>
+
+        <p class="nav-label">WORKSPACE</p>
+
+        <a class="nav-link active" href="#dashboard">
+            <i class="bi bi-grid-1x2"></i> Dashboard
+        </a>
+
+        <a class="nav-link" href="#assets">
+            <i class="bi bi-box-seam"></i> Asset Registry
+        </a>
+
+        <a class="nav-link" href="#faults">
+            <i class="bi bi-exclamation-triangle"></i> Fault Reports
+        </a>
+
+        <a class="nav-link" href="#workorders">
+            <i class="bi bi-clipboard-check"></i> Work Orders
+        </a>
+
+        <div class="sidebar-bottom">
+            <div class="status-dot"></div>
+            <div>
+                <strong>System status</strong>
+                <small>Maintenance workspace</small>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main dashboard -->
+    <main class="main-content" id="dashboard">
+
+        <!-- Header with account controls -->
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">OPERATIONS / OVERVIEW</p>
+                <h1>Asset Dashboard</h1>
+                <p class="subtitle">
+                    Monitor equipment health and maintenance activity.
+                </p>
+            </div>
+
+            <div class="account-actions">
+                <div class="date-chip">
+                    <i class="bi bi-calendar3"></i>
+                    Maintenance overview
+                </div>
+
+                <div class="account-chip">
+                    <div class="account-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+
+                    <div class="account-info">
+                        <strong id="currentUserName">Loading...</strong>
+                        <small>Signed in</small>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm"
+                            id="logoutBtn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div id="message"
+             class="alert alert-danger d-none"
+             role="alert"></div>
+
+        <div id="successMessage"
+             class="alert alert-success d-none"
+             role="status"></div>
+
+        <!-- Dashboard statistics -->
+        <section class="metric-grid">
+
+            <article class="metric-card">
+                <div class="metric-top">
+                    <span>Total assets</span>
+                    <i class="bi bi-boxes"></i>
+                </div>
+                <div class="metric-value" id="totalAssets">—</div>
+                <p>Registered equipment</p>
+            </article>
+
+            <article class="metric-card">
+                <div class="metric-top">
+                    <span>Open faults</span>
+                    <i class="bi bi-exclamation-circle"></i>
+                </div>
+                <div class="metric-value" id="openFaults">—</div>
+                <p>Unresolved fault reports</p>
+            </article>
+
+            <article class="metric-card">
+                <div class="metric-top">
+                    <span>Under repair</span>
+                    <i class="bi bi-tools"></i>
+                </div>
+                <div class="metric-value" id="underRepair">—</div>
+                <p>Assets being repaired</p>
+            </article>
+
+            <article class="metric-card">
+                <div class="metric-top">
+                    <span>Pending orders</span>
+                    <i class="bi bi-clipboard2-check"></i>
+                </div>
+                <div class="metric-value" id="pendingOrders">—</div>
+                <p>Awaiting maintenance</p>
+            </article>
+
+        </section>
+
+        <!-- Asset Registry -->
+        <section class="content-panel" id="assets">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">EQUIPMENT DIRECTORY</p>
+                    <h2>Asset Registry</h2>
+                    <p class="subtitle">
+                        Manage equipment registered in your database.
+                    </p>
+                </div>
+
+                <div class="asset-actions">
+                    <span class="record-count" id="assetCount">Loading...</span>
+
+                    <button class="btn btn-success btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#assetModal">
+                        <i class="bi bi-plus-lg"></i> Add Asset
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input id="assetSearch"
+                       type="search"
+                       placeholder="Search assets..."
+                       aria-label="Search assets">
+            </div>
+
+            <div class="table-responsive">
+                <table class="table asset-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ASSET</th>
+                            <th>CATEGORY</th>
+                            <th>LOCATION</th>
+                            <th>CONDITION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assetTable">
+                        <tr>
+                            <td colspan="4">Loading assets...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Fault Reports -->
+        <section class="content-panel" id="faults">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">ISSUE MONITOR</p>
+                    <h2>Fault Reports</h2>
+                    <p class="subtitle">
+                        Record equipment problems and update their status.
+                    </p>
+                </div>
+
+                <button class="btn btn-success btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#faultModal">
+                    <i class="bi bi-plus-lg"></i> Report Fault
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table asset-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ASSET</th>
+                            <th>DESCRIPTION</th>
+                            <th>SEVERITY</th>
+                            <th>STATUS</th>
+                            <th>UPDATE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="faultTable">
+                        <tr>
+                            <td colspan="5">Loading fault reports...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Work Orders -->
+        <section class="content-panel" id="workorders">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">MAINTENANCE PIPELINE</p>
+                    <h2>Work Orders</h2>
+                    <p class="subtitle">
+                        Schedule maintenance and track progress.
+                    </p>
+                </div>
+
+                <button class="btn btn-success btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#workOrderModal">
+                    <i class="bi bi-plus-lg"></i> Create Work Order
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table asset-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ASSET</th>
+                            <th>TASK</th>
+                            <th>PRIORITY</th>
+                            <th>SCHEDULED</th>
+                            <th>STATUS</th>
+                            <th>UPDATE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="workOrderTable">
+                        <tr>
+                            <td colspan="6">Loading work orders...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer>
+            MAINTENA <span>·</span>
+            Asset Maintenance and Service Management
+        </footer>
+
+    </main>
+</div>
+
+<!-- Add Asset Modal -->
+<div class="modal fade" id="assetModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Register New Asset</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <form id="assetForm">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label" for="assetCode">Asset Code</label>
+                        <input class="form-control"
+                               id="assetCode"
+                               required
+                               maxlength="30"
+                               placeholder="e.g. AST-005">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="assetName">Asset Name</label>
+                        <input class="form-control"
+                               id="assetName"
+                               required
+                               maxlength="100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="assetCategory">Category</label>
+                        <input class="form-control"
+                               id="assetCategory"
+                               required
+                               maxlength="50">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="assetLocation">Location</label>
+                        <input class="form-control"
+                               id="assetLocation"
+                               required
+                               maxlength="100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="assetCondition">Condition</label>
+                        <select class="form-select" id="assetCondition" required>
+                            <option value="Operational">Operational</option>
+                            <option value="Needs Attention">Needs Attention</option>
+                            <option value="Under Repair">Under Repair</option>
+                        </select>
+                    </div>
+
+                    <p id="assetFormMessage" class="small mb-0" role="status"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">Cancel</button>
+
+                    <button type="submit" class="btn btn-success">
+                        Save Asset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Report Fault Modal -->
+<div class="modal fade" id="faultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Report Equipment Fault</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <form id="faultForm">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label" for="faultAsset">Select Asset</label>
+                        <select class="form-select" id="faultAsset" required>
+                            <option value="">Choose an asset</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="faultDescription">
+                            Fault Description
+                        </label>
+                        <textarea class="form-control"
+                                  id="faultDescription"
+                                  rows="3"
+                                  maxlength="2000"
+                                  required
+                                  placeholder="Describe the problem..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="faultSeverity">Severity</label>
+                        <select class="form-select" id="faultSeverity" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+
+                    <p id="faultFormMessage" class="small mb-0" role="status"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">Cancel</button>
+
+                    <button type="submit" class="btn btn-success">
+                        Submit Fault
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Create Work Order Modal -->
+<div class="modal fade" id="workOrderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Create Work Order</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <form id="workOrderForm">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label" for="orderAsset">Select Asset</label>
+                        <select class="form-select" id="orderAsset" required>
+                            <option value="">Choose an asset</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="orderTitle">
+                            Maintenance Task
+                        </label>
+                        <input class="form-control"
+                               id="orderTitle"
+                               required
+                               maxlength="150"
+                               placeholder="e.g. Inspect motor bearings">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="orderPriority">Priority</label>
+                        <select class="form-select" id="orderPriority" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="orderDate">Scheduled Date</label>
+                        <input class="form-control" type="date" id="orderDate">
+                    </div>
+
+                    <p id="orderFormMessage" class="small mb-0" role="status"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">Cancel</button>
+
+                    <button type="submit" class="btn btn-success">
+                        Create Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/script.js"></script>
+
+</body>
+</html>

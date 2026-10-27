@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Maintena</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f8ff;
+            color: #172554;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .login-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 590px;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(36, 67, 150, 0.12);
+        }
+
+        .welcome-panel {
+            padding: 55px 45px;
+            color: white;
+            background: linear-gradient(
+                135deg,
+                #06b6d4,
+                #3b82f6 55%,
+                #8b5cf6
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 13px;
+            font-size: 24px;
+        }
+
+        .welcome-content h1 {
+            font-size: clamp(32px, 4vw, 45px);
+            line-height: 1.2;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-content p {
+            max-width: 350px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 28px 0 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 17px;
+            font-size: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .check-icon {
+            display: grid;
+            place-items: center;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .welcome-footer {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 55px 48px;
+        }
+
+        .form-panel h2 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 9px;
+        }
+
+        .form-control {
+            height: 49px;
+            border: 1px solid #dbe4f0;
+            border-radius: 11px;
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: #6288ff;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+        }
+
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-wrap input {
+            padding-right: 65px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 49px;
+            border: none;
+            border-radius: 11px;
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            margin-top: 8px;
+            background: linear-gradient(100deg, #2563eb, #7c3aed);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(79, 70, 229, 0.25);
+        }
+
+        .login-button:disabled {
+            opacity: 0.7;
+            cursor: wait;
+            transform: none;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: #4f46e5;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .security-note {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 35px;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 15px;
+            }
+
+            .login-wrapper {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+            }
+
+            .welcome-panel {
+                padding: 28px;
+                min-height: 260px;
+            }
+
+            .welcome-content {
+                margin-top: 35px;
+            }
+
+            .welcome-content h1 {
+                font-size: 31px;
+            }
+
+            .welcome-content p {
+                margin-bottom: 0;
+            }
+
+            .feature-list,
+            .welcome-footer {
+                display: none;
+            }
+
+            .form-panel {
+                padding: 35px 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-wrapper">
+
+        <section class="welcome-panel">
+            <div class="brand">
+                <div class="brand-icon">M</div>
+                <span>Maintena</span>
+            </div>
+
+            <div class="welcome-content">
+                <h1>Maintenance,<br>made smarter.</h1>
+
+                <p>
+                    Keep your equipment running smoothly.
+                    Manage assets, track faults, and organize
+                    maintenance work from one place.
+                </p>
+
+                <ul class="feature-list">
+                    <li>
+                        <span class="check-icon">✓</span>
+                        Centralized asset management
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        Real-time maintenance tracking
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        Organized work orders
+                    </li>
+                </ul>
+            </div>
+
+            <div class="welcome-footer">
+                © 2026 Maintena · Smart Asset Management
+            </div>
+        </section>
+
+        <section class="form-panel">
+            <h2>Welcome back</h2>
+
+            <p class="subtitle">
+                Sign in to continue to your workspace.
+            </p>
+
+            <div id="message" class="alert d-none" role="alert"
+                 aria-live="polite"></div>
+
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label for="email" class="form-label">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        maxlength="254"
+                        required
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+
+                    <div class="password-wrap">
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                        >
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-button" id="loginButton">
+                    Sign in to Maintena →
+                </button>
+            </form>
+
+            <div class="register-link">
+                Don't have an account?
+                <a href="/register">Create account</a>
+            </div>
+
+            <div class="security-note">
+                🔒 Your account is protected with password hashing.
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const messageBox = document.getElementById("message");
+        const loginButton = document.getElementById("loginButton");
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = "alert alert-" + type;
+        }
+
+        togglePassword.addEventListener("click", function () {
+            const isPassword = passwordInput.type === "password";
+
+            passwordInput.type = isPassword ? "text" : "password";
+            togglePassword.textContent = isPassword ? "Hide" : "Show";
+        });
+
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            messageBox.className = "alert d-none";
+            loginButton.disabled = true;
+            loginButton.textContent = "Signing in...";
+
+            try {
+                const response = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        email: document.getElementById("email").value.trim(),
+                        password: passwordInput.value
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    showMessage(
+                        result.message || "Unable to sign in.",
+                        "danger"
+                    );
+                    return;
+                }
+
+                window.location.href = result.redirect || "/dashboard";
+
+            } catch (error) {
+                showMessage(
+                    "Cannot connect to the server. Please try again.",
+                    "danger"
+                );
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = "Sign in to Maintena →";
+            }
+        });
+    </script>
+
+</body>
+</html>
